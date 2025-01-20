@@ -6016,6 +6016,19 @@ set full_name = trim(lower(full_name));
 |allix lawrie|50|divorced|alawrierq@wsj.com|515-452-7385|162 Orin Way,Des Moines,Iowa|Nurse Practicioner|3/19/2021|
 |rockey gimbrett|26|married|rgimbrettrr@google.ca|713-436-2805|77 Dorton Crossing,Houston,Texas|Account Executive|4/25/2015|
 
-
+###Cleang Duplicate 
+***SQL***:
+delete from club_member_cleaned_
+where full_name in (
+  select cl.full_name 
+  from club_member_cleaned_ as cl
+  join (
+	    select email, min(full_name) as min_full_name 
+	    from club_member_cleaned_
+	    group by email
+  ) as sub
+  on cl.email = sub.email
+  where cl.full_name > sub.min_full_name
+);
 
 
